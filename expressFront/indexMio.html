@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Escolar</title>
+    <link rel="stylesheet" type="text/css" href="myStyles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+<body>
+	<header>
+		<div class="logotipo">
+            <img src="logoUABC.png" width="100">
+            <h1 id="escolar">ESCOLAR</h1>
+         </div>
+         
+		 <!-- <nav>
+		 	<ul>
+		 		<li><a href="#">Inicio</a> </li>
+		 		<li><a href="#">Acerca de</a> </li>
+		 		<li><a href="#">Servicios</a> </li>
+		 		<li><a href="#">Contacto</a> </li>
+
+		 	</ul>
+		 </nav> -->
+    </header>
+    <section class="articles">
+    <article>
+    <div id="wrapper">
+        <h1 id="tablaE">Estudiantes</h1>
+        
+        <table id="keywords" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th><span>Nombre</span></th>
+              <th><span>Matrícula</span></th>
+              <th><span>Semestre de Ingreso</span></th>
+              <th><span>Créditos Cursados</span></th>
+              <th><span>Cursos asociados</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+     </div> 
+    </article>
+    <article>
+    <div id="wrapper2">
+        <h1 id="tablaC">Cursos</h1>
+        
+        <table id="keywords2" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th><span>Nombre</span></th>
+              <th><span>Clave</span></th>
+              <th><span>Creditos</span></th>
+              <th><span>Estudiantes inscritos</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+    </div> 
+</article>
+</section>
+	<footer>
+		<p>
+			Karla Alvarez ing en comp-2019
+		</p>
+
+    </footer>
+</body>
+<!-- funciones que hacen las tablas y las llenan de datos -->
+<script>
+    $(function(){
+      populaDatos();      
+    });
+
+    function populaDatos() {
+      fetch("http://localhost:4000/estudiantes")
+        .then(response =>{
+          return response.json();
+        })
+        .then( datos =>{
+          despliegaTabla(datos);
+        });
+    
+    }
+
+    function despliegaTabla(datos) {
+      let renglon = document.getElementsByTagName("tbody")[0];
+      datos.forEach( dato => {
+        let contenidoRenglon = document.createElement("tr");
+        contenidoRenglon.innerHTML = `
+          <td class="lalign">${dato.nombre}</td>
+          <td>${dato.matricula}</td>
+          <td>${dato.semestreIngreso}</td>
+          <td>${dato.creditosCursados}</td>
+          <td>${dato.cursos}</td>
+        `;
+        renglon.appendChild(contenidoRenglon);
+      });
+    }
+
+      $(function(){
+      populaDatosCursos();      
+    });
+
+    function populaDatosCursos() {
+      fetch("http://localhost:4000/cursos")
+        .then(response =>{
+          return response.json();
+        })
+        .then( datos =>{
+          despliegaTablaCursos(datos);
+        });
+    }
+
+    function despliegaTablaCursos(datos) {
+      let renglon = document.getElementsByTagName("tbody")[1];
+      datos.forEach( datoCurso => {
+        let contenidoRenglonCursos = document.createElement("tr");
+        contenidoRenglonCursos.innerHTML = `
+          <td class="lalign">${datoCurso.nombre}</td>
+          <td>${datoCurso.clave}</td>
+          <td>${datoCurso.creditos}</td>
+          <td>${datoCurso.estudiantes}</td>
+        `;
+        renglon.appendChild(contenidoRenglonCursos);
+      });
+    }
+
+  </script>
+</html>
